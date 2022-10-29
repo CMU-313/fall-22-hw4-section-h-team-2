@@ -1,0 +1,67 @@
+openapi: 3.0.3
+info:
+  title: Team 2 Section H API Docs 1.0.0
+  description: |-
+    Microservice that performs machine learning on student dataset to predict performance
+  version: 1.0.0
+externalDocs:
+  description: Find out more about Swagger
+  url: http://swagger.io
+paths:
+  /predict:
+    post:
+      description: Predict a student performance based on the input
+      operationId: predictPerformance
+      requestBody:
+        description: Contains age, health and absences
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Predict'
+        required: true
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PredictResult'          
+        '400':
+          description: Invalid Parameters
+          
+  /wipe:
+      get:
+        description: Wipe the model
+        operationId: wipeML
+        parameters: []
+        responses:
+          '200':
+            description: Successful operation
+  /train:
+      get:
+        description: Train the model
+        operationId: trainML
+        parameters: []
+        responses:
+          '200':
+            description: Successful operation
+          
+components:
+  schemas:
+    Predict:
+      type: object
+      properties:
+        id:
+          type: integer
+        age:
+          type: integer
+        absences:
+          type: integer
+        health:
+          type: integer
+    PredictResult:
+      type: object
+      properties:
+        performance:
+          type: string
+        
