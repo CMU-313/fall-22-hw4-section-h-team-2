@@ -13,7 +13,7 @@ paths:
       description: Predict a student performance based on the input
       operationId: predictPerformance
       requestBody:
-        description: Contains age, health and absences
+        description: Contains age, absences, health, studytime, failures, schoolsup, paid, internet
         content:
           application/json:
             schema:
@@ -28,6 +28,7 @@ paths:
                 $ref: '#/components/schemas/PredictResult'          
         '400':
           description: Invalid Parameters
+      tags: ["Paths"]
           
   /wipe:
       get:
@@ -37,6 +38,7 @@ paths:
         responses:
           '200':
             description: Successful operation
+        tags: ["Paths"]
   /train:
       get:
         description: Train the model
@@ -45,6 +47,7 @@ paths:
         responses:
           '200':
             description: Successful operation
+        tags: ["Paths"]
           
 components:
   schemas:
