@@ -23,7 +23,7 @@ def test_wipe_route():
     response = client.get(url)
 
     assert response.status_code == 200
-    assert b'Successful operation' in response.data
+    assert b'Model wiped' in response.data
 
 def test_train_route():
     app = Flask(__name__)
@@ -34,4 +34,4 @@ def test_train_route():
     response = client.get(url)
 
     assert response.status_code == 200
-    assert b'Successful operation' in response.data
+    assert b'Model training score:' in response.data
