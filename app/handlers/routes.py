@@ -24,64 +24,6 @@ def configure_routes(app):
     def hello():
         return "try the predict route it is great!"
 
-
-    @app.route('/predict')
-    def predict():
-        '''
-        if clf:
-            try:
-                json_ = request.json
-                query = pd.get_dummies(pd.DataFrame(json_))
-
-                # https://github.com/amirziai/sklearnflask/issues/3
-                # Thanks to @lorenzori
-                query = query.reindex(columns=model_columns, fill_value=0)
-
-                prediction = list(clf.predict(query))
-
-                # Converting to int from int64
-                return jsonify({"prediction": list(map(int, prediction))})
-
-            except Exception as e:
-
-                return jsonify({'error': str(e), 'trace': traceback.format_exc()})
-        else:
-            print('train first')
-            return 'no model here'
-        '''
-        #use entries from the query string here but could also use json
-        age = request.args.get('age')
-        absences = request.args.get('absences')
-        health = request.args.get('health')
-        studytime = request.args.get('studytime')
-        failures = request.args.get('failures')
-        schoolsup = request.args.get('schoolsup')
-        paid = request.args.get('paid')
-        internet = request.args.get('internet')
-        data = [[age], [health], [absences], [studytime], [failures], [schoolsup], [paid], [internet]] #[schoolsup_nan], [schoolsup_yes], [schoolsup_no], [paid_nan], [paid_yes], [paid_no], [internet_nan], [internet_yes], [internet_no]
-        query_df = pd.DataFrame({
-            'age': pd.Series(age),
-            'health': pd.Series(health),
-            'absences': pd.Series(absences),
-            'studytime': pd.Series(studytime),
-            'failures': pd.Series(failures),
-            'schoolsup': pd.Series(schoolsup),
-            'paid': pd.Series(paid),
-            'internet': pd.Series(internet)
-            #'schoolsup_nan': pd.Series(schoolsup_nan),
-            #'schoolsup_yes': pd.Series(schoolsup_yes),
-            #'schoolsup_no': pd.Series(schoolsup_no),
-            #'paid_nan': pd.Series(paid_nan),
-            #'paid_yes': pd.Series(paid_yes),
-            #'paid_no': pd.Series(paid_no),
-            #'internet_nan': pd.Series(internet_nan),
-            #'internet_yes': pd.Series(internet_yes),
-            #'internet_no': pd.Series(internet_no)
-        })
-        query = pd.get_dummies(query_df)
-        prediction = clf.predict(query)
-        return jsonify(np.asscalar(prediction))
-    
     @app.route('/train', methods=['GET'])
     def train():
         df = pd.read_csv('data/student-mat.csv', sep=';')
@@ -102,25 +44,96 @@ def configure_routes(app):
         x = df_ohe[df_ohe.columns.difference([dependent_variable])]
         y = df_ohe[dependent_variable]
 
-        global model_columns
-        model_columns = list(x.columns)
-        joblib.dump(clf, 'app/handlers/model.pkl')
-
-        global clf
         clf = rf(n_estimators = 1000)
         start = time.time()
         clf.fit(x, y)
+
+        joblib.dump(clf, 'app/handlers/model.pkl')
 
         message1 = 'Trained in %.5f seconds' % (time.time() - start)
         message2 = 'Model training score: %s' % clf.score(x, y)
         return_message = 'Success. \n{0}. \n{1}.'.format(message1, message2) 
         return return_message
+
+
+    @app.route('/predict', methods=['POST'])
+    def predict():
+        #use entries from the query string here but could also use json
+        age = request.args.get('age')
+        absences = request.args.get('absences')
+        health = request.args.get('health')
+        studytime = request.args.get('studytime')
+        failures = request.args.get('failures')
+        schoolsup = request.args.get('schoolsup')
+        paid = request.args.get('paid')
+        internet = request.args.get('internet')
+
+        schoolsup_nan = 0
+        schoolsup_yes = 0
+        schoolsup_no = 0
+
+        if (schoolsup == 'no'):
+            schoolsup_no = 1
+        elif (schoolsup == 'yes'):
+            schoolsup_yes = 1
+        else:
+            schoolsup_nan = 1
+        
+        paid_nan = 0
+        paid_yes = 0
+        paid_no = 0
+
+        if (paid == 'no'):
+            paid_no = 1
+        elif (paid == 'yes'):
+            paid_yes = 1
+        else:
+            paid_nan = 1
+        
+        internet_nan = 0
+        internet_yes = 0
+        internet_no = 0
+
+        if (internet == 'no'):
+            internet_no = 1
+        elif (internet == 'yes'):
+            internet_yes = 1
+        else:
+            internet_nan = 1
+
+        data = [[age], [health], [absences], [studytime], [failures], [schoolsup_nan], [schoolsup_yes], [schoolsup_no], [paid_nan], [paid_yes], [paid_no], [internet_nan], [internet_yes], [internet_no]]
+        query_df = pd.DataFrame({
+            'age': pd.Series(age),
+            'health': pd.Series(health),
+            'absences': pd.Series(absences),
+            'studytime': pd.Series(studytime),
+            'failures': pd.Series(failures),
+            'schoolsup_nan': pd.Series(schoolsup_nan),
+            'schoolsup_yes': pd.Series(schoolsup_yes),
+            'schoolsup_no': pd.Series(schoolsup_no),
+            'paid_nan': pd.Series(paid_nan),
+            'paid_yes': pd.Series(paid_yes),
+            'paid_no': pd.Series(paid_no),
+            'internet_nan': pd.Series(internet_nan),
+            'internet_yes': pd.Series(internet_yes),
+            'internet_no': pd.Series(internet_no)
+        })
+        query = pd.get_dummies(query_df)
+        prediction = clf.predict(query)
+        return jsonify(np.asscalar(prediction))
+        '''
+        json_ = request.json
+        query_df = pd.DataFrame(json_)
+        query = pd.get_dummies(query_df)
+        prediction = clf.predict(query)
+        return jsonify({'prediction': list(prediction)})
+        '''
     
     @app.route('/wipe', methods=['GET'])
     def wipe():
         try:
             shutil.rmtree('model')
-            os.makedirs('model')
+            os.makedirs(this_dir)
             return 'Model wiped'
 
         except Exception as e:

@@ -3,7 +3,7 @@ from flask import Flask
 from app.handlers.routes import configure_routes
 
 # Testing general predict inputs
-def test_predict_basic(client):
+def test_predict_basic():
     app = Flask(__name__)
     configure_routes(app)
     client = app.test_client()
@@ -22,19 +22,26 @@ def test_predict_basic(client):
     assert b"Successful operation" in response.data
 
 # Testing lower bounds of age variable
-def test_predict_age_OOB_low(client):
+def test_predict_age_OOB_low():
     app = Flask(__name__)
     configure_routes(app)
     client = app.test_client()
 
     response = client.post("/predict", data={
         "age": 14,
+        "health": 3,
+        "absences": 7,
+        "studytime": 4,
+        "failures": 0,
+        "schoolsup": "yes",
+        "paid": "no",
+        "internet": "yes",
     })
     assert response.status_code == 400
     assert b"Invalid Parameters" in response.data
 
 # Testing upper bounds of age variable
-def test_predict_age_OOB_high(client):
+def test_predict_age_OOB_high():
     app = Flask(__name__)
     configure_routes(app)
     client = app.test_client()
@@ -46,7 +53,7 @@ def test_predict_age_OOB_high(client):
     assert b"Invalid Parameters" in response.data
 
 # Testing lower bounds of health variable
-def test_predict_health_OOB_low(client):
+def test_predict_health_OOB_low():
     app = Flask(__name__)
     configure_routes(app)
     client = app.test_client()
@@ -58,7 +65,7 @@ def test_predict_health_OOB_low(client):
     assert b"Invalid Parameters" in response.data
 
 # Testing upper bounds of health variable
-def test_predict_health_OOB_high(client):
+def test_predict_health_OOB_high():
     app = Flask(__name__)
     configure_routes(app)
     client = app.test_client()
@@ -70,7 +77,7 @@ def test_predict_health_OOB_high(client):
     assert b"Invalid Parameters" in response.data
 
 # Testing lower bounds of absences variable
-def test_predict_absences_OOB_low(client):
+def test_predict_absences_OOB_low():
     app = Flask(__name__)
     configure_routes(app)
     client = app.test_client()
@@ -82,7 +89,7 @@ def test_predict_absences_OOB_low(client):
     assert b"Invalid Parameters" in response.data
 
 # Testing upper bounds of absences variable
-def test_predict_absences_OOB_high(client):
+def test_predict_absences_OOB_high():
     app = Flask(__name__)
     configure_routes(app)
     client = app.test_client()
@@ -94,7 +101,7 @@ def test_predict_absences_OOB_high(client):
     assert b"Invalid Parameters" in response.data
 
 # Testing lower bounds of studytime variable
-def test_predict_studytime_OOB_low(client):
+def test_predict_studytime_OOB_low():
     app = Flask(__name__)
     configure_routes(app)
     client = app.test_client()
@@ -106,7 +113,7 @@ def test_predict_studytime_OOB_low(client):
     assert b"Invalid Parameters" in response.data
 
 # Testing upper bounds of studytime variable
-def test_predict_studytime_OOB_high(client):
+def test_predict_studytime_OOB_high():
     app = Flask(__name__)
     configure_routes(app)
     client = app.test_client()
@@ -118,7 +125,7 @@ def test_predict_studytime_OOB_high(client):
     assert b"Invalid Parameters" in response.data
 
 # Testing lower bounds of failures variable
-def test_predict_failures_OOB_low(client):
+def test_predict_failures_OOB_low():
     app = Flask(__name__)
     configure_routes(app)
     client = app.test_client()
@@ -130,7 +137,7 @@ def test_predict_failures_OOB_low(client):
     assert b"Invalid Parameters" in response.data
 
 # Testing upper bounds of failures variable
-def test_predict_failures_OOB_high(client):
+def test_predict_failures_OOB_high():
     app = Flask(__name__)
     configure_routes(app)
     client = app.test_client()
@@ -142,7 +149,7 @@ def test_predict_failures_OOB_high(client):
     assert b"Invalid Parameters" in response.data
 
 # Testing bounds of schoolsup variable
-def test_predict_schoolsup_OOB(client):
+def test_predict_schoolsup_OOB():
     app = Flask(__name__)
     configure_routes(app)
     client = app.test_client()
@@ -154,7 +161,7 @@ def test_predict_schoolsup_OOB(client):
     assert b"Invalid Parameters" in response.data
 
 # Testing bounds of paid variable
-def test_predict_paid_OOB(client):
+def test_predict_paid_OOB():
     app = Flask(__name__)
     configure_routes(app)
     client = app.test_client()
@@ -166,7 +173,7 @@ def test_predict_paid_OOB(client):
     assert b"Invalid Parameters" in response.data
 
 # Testing bounds of internet variable
-def test_predict_internet_OOB(client):
+def test_predict_internet_OOB():
     app = Flask(__name__)
     configure_routes(app)
     client = app.test_client()
