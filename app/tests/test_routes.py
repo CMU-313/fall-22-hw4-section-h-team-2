@@ -14,7 +14,7 @@ def test_base_route():
     assert response.status_code == 200
     assert response.get_data() == b'try the predict route it is great!'
 
-def test_train_wipe_route():
+def test_train_route():
     app = Flask(__name__)
     configure_routes(app)
     client = app.test_client()
@@ -24,10 +24,3 @@ def test_train_wipe_route():
 
     assert response.status_code == 200
     assert b'Model training score:' in response.data
-
-    url = '/wipe'
-
-    response = client.get(url)
-
-    assert response.status_code == 200
-    assert b'Model wiped' in response.data
