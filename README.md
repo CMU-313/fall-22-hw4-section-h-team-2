@@ -1,17 +1,19 @@
 # Details on New Data-Trained Model
 
-Our new model has been trained using the following parameters:
+Our new model has been trained using the following featrues:
 
 - age - student's age (numeric: from 15 to 22)
-- health - current health status (numeric: from 1 - very bad to 5 - very good)
+- health - student's current health status (numeric: from 1 - very bad to 5 - very good)
 - absences - number of school absences (numeric: from 0 to 93)
-- studytime - weekly study time (numeric: 1 - <2 hours, 2 - 2 to 5 hours, 3 - 5 to 10 hours, or 4 - >10 hours)
-- failures - number of past class failures (numeric: n if 1<=n<3, else 4)
-- schoolsup - extra educational support (binary: yes or no)
-- paid - extra paid classes within the course subject (binary: yes or no)
-- internet - Internet access at home (binary: yes or no)
+- studytime - student's weekly study time (numeric: 1 - <2 hours, 2 - 2 to 5 hours, 3 - 5 to 10 hours, or 4 - >10 hours)
+- failures - number of classes the student failed in the past (numeric: n if 1<=n<3, else 4)
+- schoolsup - whether or not the student receives extra educational support (yes/no)
+- paid - whether or not the student takes extra paid classes for Math or Portugese (yes/no)
+- internet - whether or not the student has internet access at home (yes/no)
 
-Compared to the previous model,
+The baseline model performed at around a 55% accuracy when given input data it hasn't seen before. The new
+model that we created performs at around a 92% accuracy when given input data it hasn't seen before, which
+is a significant improvement from the baseline. 
 
 # HW4 Starter Code and Instructions
 
