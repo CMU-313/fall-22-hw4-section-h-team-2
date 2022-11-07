@@ -1,3 +1,18 @@
+# Details on New Data-Trained Model
+
+Our new model has been trained using the following parameters:
+
+- age - student's age (numeric: from 15 to 22)
+- health - current health status (numeric: from 1 - very bad to 5 - very good)
+- absences - number of school absences (numeric: from 0 to 93)
+- studytime - weekly study time (numeric: 1 - <2 hours, 2 - 2 to 5 hours, 3 - 5 to 10 hours, or 4 - >10 hours)
+- failures - number of past class failures (numeric: n if 1<=n<3, else 4)
+- schoolsup - extra educational support (binary: yes or no)
+- paid - extra paid classes within the course subject (binary: yes or no)
+- internet - Internet access at home (binary: yes or no)
+
+Compared to the previous model,
+
 # HW4 Starter Code and Instructions
 
 Please consult the [homework assignment](https://cmu-313.github.io//assignments/hw4) for additional context and instructions for this code.
